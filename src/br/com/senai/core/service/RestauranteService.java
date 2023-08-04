@@ -91,8 +91,7 @@ public class RestauranteService {
 				boolean isLogradouroInvalido = restaurante.getEndereco().getLogradouro() ==null || restaurante.getEndereco().getLogradouro().isBlank() || restaurante.getEndereco().getLogradouro().length() > 200;
 				boolean isBairroInvalido = restaurante.getEndereco().getBairro() ==null || restaurante.getEndereco().getBairro().isBlank() || restaurante.getEndereco().getBairro().length() > 250;
 				boolean isCategoriaInvalido = restaurante.getCategoria() == null && restaurante.getCategoria().getId() >0;
-				
-				
+								
 				if (isNomeInvalido) {
 					throw new IllegalArgumentException("O nome do restaurante é obrigatório e não deve possuir mais de 250 caracteres");
 				}
