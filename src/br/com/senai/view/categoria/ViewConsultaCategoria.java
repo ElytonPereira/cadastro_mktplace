@@ -1,6 +1,5 @@
-package br.com.senai.view;
+package br.com.senai.view.categoria;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -23,6 +22,10 @@ import br.com.senai.view.componentes.CategoriaTableModel;
 
 public class ViewConsultaCategoria extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField edtFiltro;
 	private JTable tableCategoria;
@@ -39,7 +42,7 @@ public class ViewConsultaCategoria extends JFrame {
 		
 		setTitle("Gerenciar Categoria - Listagem");
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 664, 576);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -78,6 +81,7 @@ public class ViewConsultaCategoria extends JFrame {
 					List<Categoria> categoriaResultado = service.listarPor(filtro);
 					CategoriaTableModel model = new CategoriaTableModel(categoriaResultado);
 					tableCategoria.setModel(model);
+					configurarTabela();
 					
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(contentPane, e2.getMessage());
@@ -92,12 +96,9 @@ public class ViewConsultaCategoria extends JFrame {
 		lblNewLabel_2.setBounds(10, 151, 146, 14);
 		contentPane.add(lblNewLabel_2);
 		
-		JScrollPane spCategoria = new JScrollPane();
+		JScrollPane spCategoria = new JScrollPane(tableCategoria);
 		spCategoria.setBounds(10, 195, 628, 224);
 		contentPane.add(spCategoria);
-		
-		tableCategoria = new JTable();
-		spCategoria.setViewportView(tableCategoria);
 		
 		JButton btnExcluir = new JButton("Excluir");
 		btnExcluir.addActionListener(new ActionListener() {
@@ -116,10 +117,10 @@ public class ViewConsultaCategoria extends JFrame {
 						
 						if (op == 0) {
 							
-							Categoria CentroSelecionado = model.getPor(linhaSelecionada);
+							Categoria CategoriaSelecionada = model.getPor(linhaSelecionada);
 							
 							model.removerPor(linhaSelecionada);
-							service.removerPor(CentroSelecionado.getId());
+							service.removerPor(CategoriaSelecionada.getId());
 							
 							tableCategoria.updateUI();
 							JOptionPane.showMessageDialog(contentPane, "Categoria excluida com sucesso");
@@ -139,17 +140,23 @@ public class ViewConsultaCategoria extends JFrame {
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int linhaSelecionada = tableCategoria.getSelectedRow();
-				
-				CategoriaTableModel model = (CategoriaTableModel) tableCategoria.getModel();
-				
-				if (linhaSelecionada >=0 && !model.isVazio() && !model.isLinhaInvalida(linhaSelecionada)) {
-					Categoria categoriaSelecionada = model.getPor(linhaSelecionada);
-					ViewCadastroCategoria view = new ViewCadastroCategoria();
-					view.alterarCategoria(categoriaSelecionada);
-					view.setVisible(true);
-					dispose();
+				try {
+					int linhaSelecionada = tableCategoria.getSelectedRow();
 					
+					CategoriaTableModel model = (CategoriaTableModel) tableCategoria.getModel();
+					
+					if (linhaSelecionada >=0 && !model.isVazio() && !model.isLinhaInvalida(linhaSelecionada)) {
+						Categoria categoriaSelecionada = model.getPor(linhaSelecionada);
+						ViewCadastroCategoria view = new ViewCadastroCategoria();
+						view.alterarCategoria(categoriaSelecionada);
+						view.setVisible(true);
+						dispose();
+						
+					} else {
+						JOptionPane.showMessageDialog(contentPane, "Selecione um registro na tabela para alteração");
+					}
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(contentPane, e2.getMessage());
 				}
 				
 			}
@@ -159,4 +166,18 @@ public class ViewConsultaCategoria extends JFrame {
 		
 		setLocationRelativeTo(null);
 	}
+	private void configurarColuna(int indice, int largura) {
+		this.tableCategoria.getColumnModel().getColumn(indice).setResizable(false); // nao deixa alterar o tamanho
+		this.tableCategoria.getColumnModel().getColumn(indice).setPreferredWidth(largura);
+	}
+	
+	private void configurarTabela() {
+		final int COLUNA_ID =0;
+		final int COLUNA_NOME =1;
+		this.tableCategoria.getTableHeader().setReorderingAllowed(false); //nao deixa mexer na coluna
+		this.tableCategoria.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.configurarColuna(COLUNA_ID, 3);
+		this.configurarColuna(COLUNA_NOME, 250);
+	}
+	
 }

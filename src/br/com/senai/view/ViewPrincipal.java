@@ -13,8 +13,16 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import br.com.senai.view.categoria.ViewCadastroCategoria;
+import br.com.senai.view.horarioAtendimento.ViewCadastroHorario;
+import br.com.senai.view.restaurante.ViewCadastroRestaurante;
+
 public class ViewPrincipal extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	public ViewPrincipal() {

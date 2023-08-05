@@ -1,6 +1,5 @@
-package br.com.senai.view;
+package br.com.senai.view.restaurante;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -22,6 +21,10 @@ import br.com.senai.core.service.RestauranteService;
 
 public class ViewCadastroRestaurante extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField edtnome;
 	private JTextField edtDescricao;
