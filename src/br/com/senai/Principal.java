@@ -8,6 +8,8 @@ public class Principal {
 		ViewPrincipal view = new ViewPrincipal();
 		view.setVisible(true);
 		
+		System.out.println("O sistema foi inicializado com sucesso!");
+		
 	}
 
 }
