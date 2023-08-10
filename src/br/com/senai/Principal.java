@@ -6,9 +6,7 @@ public class Principal {
 
 	public static void main(String[] args) {
 		ViewPrincipal view = new ViewPrincipal();
-		view.setVisible(true);
-		
-		System.out.println("O sistema foi inicializado com sucesso!");
+		view.setVisible(true);		
 		
 	}
 
