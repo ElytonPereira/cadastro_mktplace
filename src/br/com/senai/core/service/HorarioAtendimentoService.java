@@ -1,8 +1,11 @@
 package br.com.senai.core.service;
 
+import java.util.List;
+
 import br.com.senai.core.dao.DaoHorarioAtendimento;
 import br.com.senai.core.dao.FactoryDao;
 import br.com.senai.core.domain.HorarioAtendimento;
+import br.com.senai.core.domain.Restaurante;
 
 public class HorarioAtendimentoService {
 
@@ -16,6 +19,10 @@ public class HorarioAtendimentoService {
 	
 	public void salvar(HorarioAtendimento horarioAtendimento) {
 		this.dao.inserir(horarioAtendimento);
+	}
+	
+	public List<HorarioAtendimento> listarPor(Restaurante restaurante){
+		return dao.listarPor(restaurante.getId());
 	}
 	
 	public void validar(HorarioAtendimento horarioAtendimento) {

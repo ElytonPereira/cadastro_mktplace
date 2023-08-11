@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
@@ -25,6 +26,7 @@ import br.com.senai.core.domain.HorarioAtendimento;
 import br.com.senai.core.domain.Restaurante;
 import br.com.senai.core.service.HorarioAtendimentoService;
 import br.com.senai.core.service.RestauranteService;
+import br.com.senai.view.componentes.HorarioTableModel;
 
 public class ViewCadastroHorario extends JFrame {
 
@@ -62,6 +64,14 @@ public class ViewCadastroHorario extends JFrame {
 	}
 	
 	public ViewCadastroHorario() {
+		
+		HorarioTableModel model = new HorarioTableModel(new ArrayList<HorarioAtendimento>());
+		this.tableHorario = new JTable(model);
+		
+		this.tableHorario.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		
+		
 		setTitle("Gerenciar Horários - Cadastro");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -77,6 +87,16 @@ public class ViewCadastroHorario extends JFrame {
 		contentPane.add(lblNewLabel);
 
 		cbRestaurante = new JComboBox();
+		cbRestaurante.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Restaurante restauranteCb = (Restaurante) cbRestaurante.getSelectedItem();
+				List<HorarioAtendimento> horarios = horarioAtendimentoService.listarPor(restauranteCb);
+				HorarioTableModel model2 = new HorarioTableModel(horarios);
+				tableHorario.setModel(model2);
+				tableHorario.updateUI();
+				configurarTabela();
+			}
+		});
 		cbRestaurante.setBounds(100, 20, 582, 22);
 		contentPane.add(cbRestaurante);
 
@@ -180,6 +200,23 @@ public class ViewCadastroHorario extends JFrame {
 		
 		
 		this.carregarComboRestaurante();
+		
 		this.carregarComboDia();
+	}
+	
+	private void configurarColuna(int indice, int largura) {
+		this.tableHorario.getColumnModel().getColumn(indice).setResizable(false); // nao deixa alterar o tamanho
+		this.tableHorario.getColumnModel().getColumn(indice).setPreferredWidth(largura);
+	}
+	
+	private void configurarTabela() {
+		final int COLUNA_DIA =0;
+		final int COLUNA_ABERTURA =1;
+		final int COLUNA_FECHAMENTO =2;
+		this.tableHorario.getTableHeader().setReorderingAllowed(false); //nao deixa mexer na coluna
+		this.tableHorario.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.configurarColuna(COLUNA_DIA, 150);
+		this.configurarColuna(COLUNA_ABERTURA, 150);
+		this.configurarColuna(COLUNA_FECHAMENTO, 150);
 	}
 }

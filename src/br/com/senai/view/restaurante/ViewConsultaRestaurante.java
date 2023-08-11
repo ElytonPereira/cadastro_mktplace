@@ -1,6 +1,5 @@
 package br.com.senai.view.restaurante;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -26,32 +25,14 @@ import br.com.senai.view.componentes.RestauranteTableModel;
 
 public class ViewConsultaRestaurante extends JFrame {
 
+	
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField edtNome;
 	private JTable tableRestaurante;
 	private JComboBox<Categoria> cbCategoria;
 	private CategoriaService categoriaService = new CategoriaService();
 	private RestauranteService restauranteService = new RestauranteService(); 
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ViewConsultaRestaurante frame = new ViewConsultaRestaurante();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	
 	public void carregarComboCategoria() {
 		List<Categoria> categorias = categoriaService.listarCategoria();
@@ -196,7 +177,7 @@ public class ViewConsultaRestaurante extends JFrame {
 					List<Restaurante> restauranteResultado = restauranteService.listarPor(nome, categoria);
 					RestauranteTableModel model = new RestauranteTableModel(restauranteResultado);
 					tableRestaurante.setModel(model);
-										
+					configurarTabela();					
 					
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(contentPane, e2.getMessage());
@@ -208,4 +189,21 @@ public class ViewConsultaRestaurante extends JFrame {
 		contentPane.add(btnListar);
 		this.carregarComboCategoria();
 	}
+	
+	private void configurarColuna(int indice, int largura) {
+		this.tableRestaurante.getColumnModel().getColumn(indice).setResizable(false); // nao deixa alterar o tamanho
+		this.tableRestaurante.getColumnModel().getColumn(indice).setPreferredWidth(largura);
+	}
+	
+	private void configurarTabela() {
+		final int COLUNA_DIA =0;
+		final int COLUNA_ABERTURA =1;
+		final int COLUNA_FECHAMENTO =2;
+		this.tableRestaurante.getTableHeader().setReorderingAllowed(false); //nao deixa mexer na coluna
+		this.tableRestaurante.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.configurarColuna(COLUNA_DIA, 3);
+		this.configurarColuna(COLUNA_ABERTURA, 150);
+		this.configurarColuna(COLUNA_FECHAMENTO, 150);
+	}
+	
 }

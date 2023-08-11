@@ -104,6 +104,26 @@ public class HorarioAtendimento {
             return "";
     }
 }
+	public String reconverterDia (String dia) {
+		switch (dia) {
+		case "DOMINGO":
+			return "DOM=";
+		case "SEGUNDA":
+			return "SEG";
+		case "TERCA":
+			return "TER";
+		case "QUARTA":
+			return "QUA";
+		case "QUINTA":
+			return "QUI";
+		case "SEXTA":
+			return "SEX";
+		case "SABADO":
+			return "SAB";        
+		default:
+			return "";
+		}
+	}
 		
 	}
 	

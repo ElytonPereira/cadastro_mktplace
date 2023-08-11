@@ -19,7 +19,7 @@ public class DaoPostgresRestaurante implements DaoRestaurante {
 	private String DELETE = "DELETE FROM restaurantes WHERE id = ? ";
 	private String SELECT_BY_ID = "SELECT r.id id_restaurante, r.nome nome_restaurante, r.descricao, r.cidade, r.logradouro, r.bairro, r.complemento, c.id id_categoria, c.nome nome_categoria FROM restaurantes r, categorias c WHERE r.id_categoria = c.id and r.id =? ";
 	private String SELECT_BY_NOME_CATEG = "SELECT r.id id_restaurante, r.nome nome_restaurante, r.descricao, r.cidade, r.logradouro, r.bairro, r.complemento, c.id id_categoria, c.nome nome_categoria FROM restaurantes r, categorias c WHERE r.id_categoria = c.id ";
-	private String SELECT_RESTAURANTES_ALL = "SELECT r.id id_restaurante, r.nome nome_restaurante, r.descricao, r.cidade, r.logradouro, r.bairro, r.complemento, c.id id_categoria, c.nome nome_categoria FROM restaurantes r, categorias c WHERE r.id_categoria = c.id";
+	private String SELECT_RESTAURANTES_ALL = "SELECT r.id id_restaurante, r.nome nome_restaurante, r.descricao, r.cidade, r.logradouro, r.bairro, r.complemento, c.id id_categoria, c.nome nome_categoria FROM restaurantes r, categorias c WHERE r.id_categoria = c.id order by r.nome";
 	
 	private Connection conexao;
 	
