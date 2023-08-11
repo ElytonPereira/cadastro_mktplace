@@ -22,6 +22,8 @@ import br.com.senai.core.domain.Restaurante;
 import br.com.senai.core.service.CategoriaService;
 import br.com.senai.core.service.RestauranteService;
 import br.com.senai.view.componentes.RestauranteTableModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ViewConsultaRestaurante extends JFrame {
 
@@ -89,6 +91,12 @@ public class ViewConsultaRestaurante extends JFrame {
 		contentPane.add(lblNewLabel_1_1);
 		
 		cbCategoria = new JComboBox();
+		cbCategoria.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				carregarComboCategoria();
+			}
+		});
 		cbCategoria.setBounds(354, 64, 164, 22);
 		contentPane.add(cbCategoria);
 		
@@ -174,6 +182,7 @@ public class ViewConsultaRestaurante extends JFrame {
 				try {
 					String nome = edtNome.getText();
 					Categoria categoria = (Categoria) cbCategoria.getSelectedItem();
+					
 					List<Restaurante> restauranteResultado = restauranteService.listarPor(nome, categoria);
 					RestauranteTableModel model = new RestauranteTableModel(restauranteResultado);
 					tableRestaurante.setModel(model);
@@ -187,7 +196,7 @@ public class ViewConsultaRestaurante extends JFrame {
 		});
 		btnListar.setBounds(545, 64, 89, 23);
 		contentPane.add(btnListar);
-		this.carregarComboCategoria();
+		
 		
 	}
 	
