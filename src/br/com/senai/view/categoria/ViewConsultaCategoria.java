@@ -49,6 +49,7 @@ public class ViewConsultaCategoria extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		
 		JButton btnNovo = new JButton("Novo");
 		btnNovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -93,7 +94,7 @@ public class ViewConsultaCategoria extends JFrame {
 		contentPane.add(btnListar);
 		
 		JLabel lblNewLabel_2 = new JLabel("Categoria Encontradas: ");
-		lblNewLabel_2.setBounds(10, 151, 146, 14);
+		lblNewLabel_2.setBounds(10, 151, 194, 14);
 		contentPane.add(lblNewLabel_2);
 		
 		JScrollPane spCategoria = new JScrollPane(tableCategoria);

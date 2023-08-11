@@ -55,4 +55,12 @@ public class RestauranteTableModel extends AbstractTableModel{
 		this.restaurantes.remove(rowIndex);
 	}
 	
+	public boolean isVazio() {
+		return restaurantes.isEmpty();
+	}
+	
+	public boolean isLinhaInvalida(int id) {
+		return id >= restaurantes.size();
+	}
+	
 }

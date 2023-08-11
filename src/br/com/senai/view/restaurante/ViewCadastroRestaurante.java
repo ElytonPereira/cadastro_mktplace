@@ -46,6 +46,19 @@ public class ViewCadastroRestaurante extends JFrame {
 		}		
 	}
 	
+	public void alterarRestaurante(Restaurante restaurante) {
+		this.restaurante = restaurante;
+		this.edtnome.setText(restaurante.getNome());
+		this.edtDescricao.setText(restaurante.getDescricao());
+		this.edtBairro.setText(restaurante.getEndereco().getBairro());
+		this.edtCidade.setText(restaurante.getEndereco().getCidade());
+		this.edtlogradouro.setText(restaurante.getEndereco().getLogradouro());
+		this.edtComplemento.setText(restaurante.getEndereco().getComplemento());
+		this.cbCategoria.setSelectedItem(restaurante.getCategoria());
+		
+		
+	}
+	
 	
 	public ViewCadastroRestaurante() {
 		setResizable(false);
@@ -60,6 +73,14 @@ public class ViewCadastroRestaurante extends JFrame {
 		setLocationRelativeTo(null);
 		
 		JButton btnPesquisar = new JButton("Pesquisar");
+		btnPesquisar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ViewConsultaRestaurante view = new ViewConsultaRestaurante();
+				view.setVisible(true);
+				dispose();
+			}
+		});
 		btnPesquisar.setBounds(495, 11, 100, 23);
 		contentPane.add(btnPesquisar);
 		
