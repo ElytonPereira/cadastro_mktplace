@@ -18,12 +18,30 @@ public class HorarioAtendimentoService {
 	}
 	
 	public void salvar(HorarioAtendimento horarioAtendimento) {
-		this.dao.inserir(horarioAtendimento);
+		this.validar(horarioAtendimento);
+		
+		boolean isJaInserido = horarioAtendimento.getId() >0;
+		if(isJaInserido) {
+			this.dao.alterar(horarioAtendimento);
+			
+		}else {
+			this.dao.inserir(horarioAtendimento);
+			
+		}
 	}
 	
 	public List<HorarioAtendimento> listarPor(Restaurante restaurante){
 		return dao.listarPor(restaurante.getId());
 	}
+	
+	public void removerPor(int id) {
+		if(id >0) {
+			this.dao.excluirPor(id);
+		}else {
+			throw new IllegalArgumentException("O id do horario deve ser maior que 0");
+		}
+	}
+	
 	
 	public void validar(HorarioAtendimento horarioAtendimento) {
 		if(horarioAtendimento != null) {

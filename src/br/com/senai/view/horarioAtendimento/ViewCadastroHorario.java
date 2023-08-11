@@ -63,6 +63,16 @@ public class ViewCadastroHorario extends JFrame {
 		
 	}
 	
+	private void alterarHorario(HorarioAtendimento horarioSelecionado) {
+		
+		this.horarioAtendimento = horarioSelecionado;
+		cbRestaurante.setSelectedItem(horarioSelecionado.getRestaurante());
+		cbDias.setSelectedItem(horarioSelecionado.getDia());
+		ftfAbertura.setText(horarioSelecionado.getHoraAbertura().toString());
+		ftfFechamento.setText(horarioSelecionado.getHoraFechamento().toString());
+		
+	}
+	
 	public ViewCadastroHorario() {
 		
 		HorarioTableModel model = new HorarioTableModel(new ArrayList<HorarioAtendimento>());
@@ -132,15 +142,37 @@ public class ViewCadastroHorario extends JFrame {
 					
 					if (horarioAtendimento ==null) {
 						HorarioAtendimento horarioAtendimento = new HorarioAtendimento(horAbertura, horFechamento, restaurante, diaSemana);
-						horarioAtendimentoService.salvar(horarioAtendimento);
-						JOptionPane.showMessageDialog(contentPane, "Horário inserido com sucesso");
+						
+						horarioAtendimentoService.salvar(horarioAtendimento);						
+						JOptionPane.showMessageDialog(contentPane, "Horário salvo com sucesso");
+						
 						ftfAbertura.setText("");
 						ftfFechamento.setText("");
 						cbDias.setSelectedIndex(0);
 						horarioAtendimento = null;
-					}
+						
+					}else {
+						horarioAtendimento.setDia(diaSemana);
+						horarioAtendimento.setHoraAbertura(horAbertura);
+						horarioAtendimento.setHoraFechamento(horFechamento);
+						horarioAtendimento.setRestaurante(restaurante);
+						
+						horarioAtendimentoService.salvar(horarioAtendimento);
+						
+						JOptionPane.showMessageDialog(contentPane, "Horário alterado com sucesso");
+						ftfAbertura.setText("");
+						ftfFechamento.setText("");
+						cbDias.setSelectedIndex(0);						
+						
+						horarioAtendimento = null;
+					}					
 					
-					
+					Restaurante restauranteCb = (Restaurante) cbRestaurante.getSelectedItem();
+					List<HorarioAtendimento> horarios = horarioAtendimentoService.listarPor(restauranteCb);
+					HorarioTableModel model2 = new HorarioTableModel(horarios);
+					tableHorario.setModel(model2);
+					tableHorario.updateUI();
+					configurarTabela();
 					
 				}catch (DateTimeParseException dtpe) {
 					JOptionPane.showMessageDialog(contentPane, "A hora de abertura e fechamento é obrigatória e deve estar no formato HH:MM");	
@@ -167,14 +199,70 @@ public class ViewCadastroHorario extends JFrame {
 		contentPane.add(lblNewLabel_3);
 
 		JButton btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int linhaSelecionada = tableHorario.getSelectedRow();
+				
+				HorarioTableModel model = (HorarioTableModel) tableHorario.getModel();
+				
+				if(linhaSelecionada >=0 && !model.isVazio() && !model.isLinhaInvalida(linhaSelecionada)) {
+					HorarioAtendimento horarioSelecionado = model.getPor(linhaSelecionada);
+					alterarHorario(horarioSelecionado);
+					
+				}else {
+					JOptionPane.showMessageDialog(contentPane, "Selecione uma linha para editar");
+				}
+				
+			}
+		});
 		btnEditar.setBounds(546, 142, 89, 23);
 		contentPane.add(btnEditar);
 
 		JButton btnExcluir = new JButton("Excluir");
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					int linhaSelecionada = tableHorario.getSelectedRow();
+					
+					HorarioTableModel model = (HorarioTableModel) tableHorario.getModel();
+					
+					if (linhaSelecionada >= 0 && !model.isVazio() && !model.isLinhaInvalida(linhaSelecionada)) {
+						int op = JOptionPane.showConfirmDialog(contentPane, 
+								"Deseja realmente remover?", 
+								"Remoção", JOptionPane.YES_NO_OPTION);
+						
+						if (op == 0) {
+							HorarioAtendimento horarioSelecionado =model.getPor(linhaSelecionada);
+							
+							model.removerPor(linhaSelecionada);
+							horarioAtendimentoService.removerPor(horarioSelecionado.getId());
+							tableHorario.updateUI();
+							JOptionPane.showMessageDialog(contentPane, "Horario excluido com sucesso!");
+							
+						}
+						
+					} else {
+						JOptionPane.showMessageDialog(contentPane, "Selecione uma linha para excluir!");
+					}
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(contentPane, e2.getMessage());
+				}
+			}
+		});
 		btnExcluir.setBounds(546, 176, 89, 23);
 		contentPane.add(btnExcluir);
 
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ftfAbertura.setText("");
+				ftfFechamento.setText("");
+				cbDias.setSelectedIndex(0);
+				horarioAtendimento = null;
+			}
+		});
 		btnCancelar.setBounds(588, 308, 89, 23);
 		contentPane.add(btnCancelar);
 		

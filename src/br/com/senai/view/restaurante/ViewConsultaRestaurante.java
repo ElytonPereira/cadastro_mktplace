@@ -188,6 +188,7 @@ public class ViewConsultaRestaurante extends JFrame {
 		btnListar.setBounds(545, 64, 89, 23);
 		contentPane.add(btnListar);
 		this.carregarComboCategoria();
+		
 	}
 	
 	private void configurarColuna(int indice, int largura) {
