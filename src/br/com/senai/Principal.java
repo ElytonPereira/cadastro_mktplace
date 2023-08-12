@@ -7,8 +7,7 @@ public class Principal {
 	public static void main(String[] args) {
 		ViewPrincipal view = new ViewPrincipal();
 		view.setVisible(true);		
-		System.out.println("Aplicação iniciada com sucesso");
-		System.out.println("Aplicação iniciada corretamente");
+		
 	}
 
 }

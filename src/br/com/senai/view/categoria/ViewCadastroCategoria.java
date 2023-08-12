@@ -88,7 +88,7 @@ public class ViewCadastroCategoria extends JFrame {
 					
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(contentPane, e2.getMessage());
-					categoria = null;
+					
 				}
 				
 			}

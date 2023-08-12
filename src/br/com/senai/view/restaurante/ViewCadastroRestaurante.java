@@ -198,9 +198,13 @@ public class ViewCadastroRestaurante extends JFrame {
 
 					}else {
 						restaurante.setNome(nome);
-						restaurante = new Restaurante(nome, descricao, endereco, categoria);
+						restaurante.setCategoria(categoria);
+						restaurante.setDescricao(descricao);
+						restaurante.setEndereco(endereco);
+						
+						
 						serviceRestaurante.salvar(restaurante);
-						JOptionPane.showMessageDialog(contentPane, "Restaurante inserido com sucesso");
+						JOptionPane.showMessageDialog(contentPane, "Restaurante alterado com sucesso");
 						 edtnome.setText("");
 						 edtDescricao.setText("");
 						 edtlogradouro.setText("");
@@ -213,7 +217,7 @@ public class ViewCadastroRestaurante extends JFrame {
 					
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(contentPane, e2.getMessage());
-					restaurante = null;
+					
 				}
 			}
 		});

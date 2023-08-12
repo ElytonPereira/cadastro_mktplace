@@ -30,15 +30,11 @@ import br.com.senai.view.componentes.HorarioTableModel;
 
 public class ViewCadastroHorario extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable tableHorario;
 	JFormattedTextField ftfAbertura;
-	JFormattedTextField ftfFechamento;	
-	
+	JFormattedTextField ftfFechamento;		
 	
 	private JComboBox<Restaurante> cbRestaurante;
 	private JComboBox<DiaSemana> cbDias;
@@ -79,8 +75,6 @@ public class ViewCadastroHorario extends JFrame {
 		this.tableHorario = new JTable(model);
 		
 		this.tableHorario.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		
 		
 		setTitle("Gerenciar Horários - Cadastro");
 		setResizable(false);
@@ -136,9 +130,7 @@ public class ViewCadastroHorario extends JFrame {
 					Restaurante restaurante = (Restaurante) cbRestaurante.getSelectedItem();
 					DiaSemana diaSemana =(DiaSemana) cbDias.getSelectedItem();
 					LocalTime horAbertura = LocalTime.from(dtf.parse(ftfAbertura.getText()));
-					LocalTime horFechamento = LocalTime.from(dtf.parse(ftfFechamento.getText()));			
-					
-					
+					LocalTime horFechamento = LocalTime.from(dtf.parse(ftfFechamento.getText()));								
 					
 					if (horarioAtendimento ==null) {
 						HorarioAtendimento horarioAtendimento = new HorarioAtendimento(horAbertura, horFechamento, restaurante, diaSemana);
@@ -178,8 +170,7 @@ public class ViewCadastroHorario extends JFrame {
 					JOptionPane.showMessageDialog(contentPane, "A hora de abertura e fechamento é obrigatória e deve estar no formato HH:MM");	
 				}
 				catch (Exception e2) {
-					JOptionPane.showMessageDialog(contentPane, e2.getMessage());
-					horarioAtendimento = null;
+					JOptionPane.showMessageDialog(contentPane, e2.getMessage());					
 				} 
 				
 			}
