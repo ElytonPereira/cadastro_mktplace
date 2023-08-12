@@ -196,6 +196,19 @@ public class ViewCadastroRestaurante extends JFrame {
 						 
 						 restaurante =null;
 
+					}else {
+						restaurante.setNome(nome);
+						restaurante = new Restaurante(nome, descricao, endereco, categoria);
+						serviceRestaurante.salvar(restaurante);
+						JOptionPane.showMessageDialog(contentPane, "Restaurante inserido com sucesso");
+						 edtnome.setText("");
+						 edtDescricao.setText("");
+						 edtlogradouro.setText("");
+						 edtCidade.setText("");
+						 edtBairro.setText("");
+						 edtComplemento.setText("");
+						 
+						 restaurante =null;
 					}
 					
 				} catch (Exception e2) {
