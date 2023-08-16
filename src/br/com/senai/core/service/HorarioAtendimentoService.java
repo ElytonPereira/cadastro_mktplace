@@ -1,9 +1,12 @@
 package br.com.senai.core.service;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.senai.core.dao.DaoHorarioAtendimento;
 import br.com.senai.core.dao.FactoryDao;
+import br.com.senai.core.domain.DiaSemana;
 import br.com.senai.core.domain.HorarioAtendimento;
 import br.com.senai.core.domain.Restaurante;
 
@@ -42,6 +45,9 @@ public class HorarioAtendimentoService {
 		
 	public void validar(HorarioAtendimento horarioAtendimento) {
 		if(horarioAtendimento != null) {
+			this.validarIntervalo(horarioAtendimento);
+			
+			
 			
 			boolean horarioInvalido = horarioAtendimento.getHoraFechamento().isBefore(horarioAtendimento.getHoraAbertura());
 			
@@ -49,12 +55,7 @@ public class HorarioAtendimentoService {
 				throw new IllegalArgumentException("A hora do fechamento não pode ser menor que a abertura");
 			}
 			
-			boolean intervaloHorarioInvalido =  (horarioAtendimento.getHoraAbertura().isAfter(horarioAtendimento.getHoraFechamento()) || 
-	                horarioAtendimento.getHoraFechamento().isBefore(horarioAtendimento.getHoraAbertura())) && (horarioAtendimento.getDia().equals(horarioAtendimento.getDia()));
 			
-			if (intervaloHorarioInvalido) {
-				throw new IllegalArgumentException("As de abertura e fechamento não podem se chocar no mesmo dia");
-			}
 			
 			boolean isHorarioAberturaInvalido = horarioAtendimento.getHoraAbertura() ==null || horarioAtendimento.getHoraAbertura().equals("  :  :  ") || horarioAtendimento.getHoraAbertura().getHour() >24;
 			
@@ -79,6 +80,49 @@ public class HorarioAtendimentoService {
 			throw new IllegalArgumentException("O horario de atendimento não pode ser nulo");
 		}		
 		
-	}	
+	}
+	
+	public void validarIntervalo(HorarioAtendimento horarioAtendimento) {
+		List<HorarioAtendimento> listaRestaurante = new ArrayList<HorarioAtendimento>();
+		LocalTime horAberturaNovo = horarioAtendimento.getHoraAbertura();
+		LocalTime horFechamentoNovo = horarioAtendimento.getHoraFechamento();
+		DiaSemana diaSemanaNovo = horarioAtendimento.getDia();		
+		
+		listaRestaurante =  this.dao.listarPor(horarioAtendimento.getRestaurante().getId());
+		
+		if(!listaRestaurante.isEmpty()) {
+			HorarioAtendimento horarioSalvo;
+			
+			for(HorarioAtendimento horarios : listaRestaurante){
+				horarioSalvo = horarios;
+				
+				if (horarioSalvo.getDia() == diaSemanaNovo) {
+					
+					if (horFechamentoNovo.isAfter(horarioSalvo.getHoraAbertura()) && horAberturaNovo.isBefore(horarioSalvo.getHoraFechamento())) {
+				        throw new IllegalArgumentException("Novo horário conflita com horário existente");
+				    }
+				    
+				    if (diaSemanaNovo == horarioAtendimento.getDia()) {
+				        if ((horAberturaNovo.isAfter(horarioSalvo.getHoraAbertura()) && horAberturaNovo.isBefore(horarioSalvo.getHoraFechamento())) ||
+				            (horFechamentoNovo.isAfter(horarioSalvo.getHoraAbertura()) && horFechamentoNovo.isBefore(horarioSalvo.getHoraFechamento()))) {
+				            throw new IllegalArgumentException("Novo horário conflita com horário existente");
+				        }
+				        
+				        if (horAberturaNovo.isBefore(horarioSalvo.getHoraAbertura()) && horFechamentoNovo.isAfter(horarioSalvo.getHoraFechamento())) {
+				            throw new IllegalArgumentException("Novo horário envolve horário existente");
+				        }
+					
+				    }
+					
+				}
+				
+				
+			}
+			
+		}
+		
+		
+	}
+	
 	
 }
